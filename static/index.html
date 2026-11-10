@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exium & Exium MUPS | Promotional Material Management - Radiant SMD</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono (StepHub Style) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #F8F9FA;
+            color: #0F172A;
+            -webkit-font-smoothing: antialiased;
+        }
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        /* Crisp High-Contrast StepHub Cards & Soft Shadows */
+        .stephub-card {
+            background: #FFFFFF;
+            border: 2px solid #E2E8F0;
+            border-radius: 1.25rem;
+            box-shadow: 0 4px 18px -2px rgba(15, 23, 42, 0.05);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .stephub-card:hover {
+            box-shadow: 0 12px 30px -4px rgba(15, 23, 42, 0.10);
+            border-color: #94A3B8;
+        }
+        .stephub-pill {
+            transition: all 0.15s ease-in-out;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.3rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.01em;
+            line-height: 1;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #F1F3F5;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #94A3B8;
+            border-radius: 9999px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #64748B;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col selection:bg-slate-900 selection:text-white">
+
+    <!-- StepHub Style Top Bar -->
+    <header class="bg-white border-b-2 border-slate-200 sticky top-0 z-40 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20 py-2 gap-4">
+                <!-- Left: Exium & Exium MUPS Brand Logos -->
+                <div class="flex items-center space-x-3 sm:space-x-4 shrink-0">
+                    <div class="h-12 px-4 py-1.5 bg-white border-2 border-slate-300 rounded-2xl flex items-center shadow-xs">
+                        <img src="/uploads/exium_logo.png" alt="Exium" class="h-8 w-auto max-w-[130px] object-contain">
+                    </div>
+                    <span class="text-slate-300 font-bold text-xl hidden sm:inline">|</span>
+                    <div class="h-12 px-4 py-1.5 bg-white border-2 border-slate-300 rounded-2xl flex items-center shadow-xs">
+                        <img src="/uploads/exium_mups_logo.png" alt="Exium MUPS" class="h-7 w-auto max-w-[145px] object-contain">
+                    </div>
+                </div>
+
+                <!-- Center: Year Selector (Shudhu Year) -->
+                <div class="flex items-center space-x-2">
+                    <div class="flex items-center bg-slate-100 p-1.5 rounded-2xl border-2 border-slate-200">
+                        <span class="text-xs font-black text-slate-900 px-2 flex items-center space-x-1.5">
+                            <i data-lucide="calendar" class="w-4 h-4 text-slate-800 stroke-[2.5]"></i>
+                            <span>Year:</span>
+                        </span>
+                        <select id="global-year-select" onchange="changeYear(this.value)" class="bg-white text-xs font-black text-slate-950 rounded-xl px-3 py-1 shadow-xs border-2 border-slate-300 focus:outline-none cursor-pointer">
+                            <option value="2027" selected>2027</option>
+                        <option value="2028">2028</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                        </select>
+                        <button onclick="openCloneYearModal()" title="Clone or Initialize Next Year" class="p-1 text-slate-800 hover:text-slate-950 hover:bg-white rounded-lg transition-all ml-1">
+                            <i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right: Active Role Profile Pill with Proper Name Spacing & Image Upload -->
+                <div class="flex items-center space-x-3 shrink-0">
+                    <div class="flex items-center space-x-3 bg-slate-100 p-1.5 pl-2.5 rounded-2xl border-2 border-slate-200 shadow-xs">
+                        <!-- Profile Image Avatar with 1-click upload -->
+                        <div class="relative group/avatar cursor-pointer shrink-0" onclick="triggerProfilePhotoUpload()" title="Click to upload profile photo">
+                            <div id="user-avatar-container" class="w-10 h-10 rounded-xl bg-slate-900 text-white font-black text-xs flex items-center justify-center overflow-hidden shadow-xs border-2 border-slate-300">
+                                <span id="user-avatar">DI</span>
+                            </div>
+                            <div class="absolute inset-0 bg-slate-950/70 rounded-xl opacity-0 group-hover/avatar:opacity-100 flex items-center justify-center text-white transition-opacity">
+                                <i data-lucide="camera" class="w-4 h-4 stroke-[2.5]"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Person Name & Designation (whitespace-nowrap with ample space) -->
+                        <div class="text-left whitespace-nowrap min-w-[125px] pr-1 hidden sm:block">
+                            <div class="text-xs font-black text-slate-950 tracking-tight leading-snug" id="user-name-display">Md. Didarul Islam</div>
+                            <div class="text-[11px] text-slate-800 font-extrabold leading-tight" id="user-role-display">Brand Manager (Admin)</div>
+                        </div>
+
+                        <!-- Role switcher -->
+                        <select id="role-switcher" class="bg-white text-xs border-2 border-slate-300 rounded-xl px-2.5 py-1.5 font-black text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900 shadow-xs cursor-pointer">
+                            <option value="1">👑 Md. Didarul Islam (Admin / Brand Mgr)</option>
+                            <option value="2">📋 Md. Zahid Hasan (Sr. Asst. Mgr, PMMD)</option>
+                            <option value="3">📋 Tanim Bin Mahmud (Asst. Mgr, PMMD)</option>
+                            <option value="4">📋 Md Whahedur Rahman Mony (Officer, PMMD)</option>
+                            <option value="5">🎨 Md. Subhani Sujon (Packaging Design)</option>
+                            <option value="6">📦 Md. Rakibuzzaman (Store & Logistics)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden Profile Photo File Inputs -->
+        <input type="file" id="user-profile-file-input" accept="image/*" class="hidden" onchange="handleProfilePhotoSelected(this)">
+        <input type="file" id="team-member-file-input" accept="image/*" class="hidden" onchange="handleMemberPhotoSelected(this)">
+
+        <!-- Role Action Banner -->
+        <div id="role-banner" class="bg-slate-900 text-white py-1.5 px-4 text-xs text-center font-bold shadow-inner">
+            <span class="font-black text-blue-300">Active Profile:</span> Md. Didarul Islam (Brand Manager, SMD). You can name items, verify budgets, and grant approval.
+        </div>
+
+        <!-- Navigation Tabs (High Contrast Distinct Pill Buttons) -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="flex space-x-2 sm:space-x-3 overflow-x-auto custom-scrollbar py-2.5 text-xs font-black">
+                <button onclick="switchTab('plan')" id="tab-btn-plan" class="tab-btn px-4 py-2 rounded-xl flex items-center space-x-2 text-white bg-slate-900 border-2 border-slate-900 shadow-sm transition-all">
+                    <i data-lucide="layout-grid" class="w-4 h-4 stroke-[2.5]"></i>
+                    <span>Promotional Catalog</span>
+                    <span id="nav-item-count" class="bg-blue-600 text-white rounded-full px-2 py-0.5 text-xs font-black">140</span>
+                </button>
+                <button onclick="switchTab('dashboard')" id="tab-btn-dashboard" class="tab-btn px-4 py-2 rounded-xl flex items-center space-x-2 bg-white text-slate-900 border-2 border-slate-200 hover:border-slate-800 hover:bg-slate-50 transition-all">
+                    <i data-lucide="pie-chart" class="w-4 h-4 stroke-[2.5]"></i>
+                    <span>Budget & Analytics</span>
+                </button>
+                <button onclick="switchTab('store')" id="tab-btn-store" class="tab-btn px-4 py-2 rounded-xl flex items-center space-x-2 bg-white text-slate-900 border-2 border-slate-200 hover:border-slate-800 hover:bg-slate-50 transition-all">
+                    <i data-lucide="package-check" class="w-4 h-4 stroke-[2.5]"></i>
+                    <span>Store & Dispersion</span>
+                    <span class="bg-amber-100 text-amber-950 border border-amber-300 rounded-full px-2 py-0.5 text-[10px] font-black">Rakibuzzaman</span>
+                </button>
+                <button onclick="switchTab('design')" id="tab-btn-design" class="tab-btn px-4 py-2 rounded-xl flex items-center space-x-2 bg-white text-slate-900 border-2 border-slate-200 hover:border-slate-800 hover:bg-slate-50 transition-all">
+                    <i data-lucide="pen-tool" class="w-4 h-4 stroke-[2.5]"></i>
+                    <span>Packaging Design</span>
+                    <span class="bg-purple-100 text-purple-950 border border-purple-300 rounded-full px-2 py-0.5 text-[10px] font-black">Subhani Sujon</span>
+                </button>
+                <button onclick="switchTab('team')" id="tab-btn-team" class="tab-btn px-4 py-2 rounded-xl flex items-center space-x-2 bg-white text-slate-900 border-2 border-slate-200 hover:border-slate-800 hover:bg-slate-50 transition-all">
+                    <i data-lucide="users" class="w-4 h-4 stroke-[2.5]"></i>
+                    <span>PMMD Team Directory</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+        <!-- ==================== TAB 1: PROMOTIONAL CATALOG (MAIN VIEW) ==================== -->
+        <section id="tab-plan" class="space-y-6">
+
+            <!-- 1. StepHub Style Top KPI Banner Cards (Colorful Light Pastel Segments) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Total Budget Card (Light Sky Segment) -->
+                <div class="stephub-card p-5 relative overflow-hidden border-2 border-sky-300 bg-gradient-to-br from-sky-50/90 via-white to-blue-50/50 shadow-xs">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-xs font-black uppercase tracking-wider text-sky-950">Annual Budget (<span id="dash-year-lbl">2027</span>)</span>
+                            <h3 id="stat-total-budget" class="text-2xl font-black text-slate-950 mt-1 tracking-tight"> 168,000,000</h3>
+                        </div>
+                        <div class="w-11 h-11 rounded-2xl bg-sky-500 text-white flex items-center justify-center shadow-xs">
+                            <i data-lucide="wallet" class="w-6 h-6 stroke-[2.5]"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center justify-between text-xs pt-2.5 border-t-2 border-sky-200/80">
+                        <button onclick="openBudgetModal()" class="text-sky-900 hover:text-blue-950 font-black flex items-center space-x-1">
+                            <i data-lucide="edit-3" class="w-4 h-4 stroke-[2.5]"></i>
+                            <span>Configure</span>
+                        </button>
+                        <span class="text-sky-900 font-extrabold">Approved Limit</span>
+                    </div>
+                </div>
+
+                <!-- BR Budget & Spend (Light Indigo Segment) -->
+                <div class="stephub-card p-5 border-2 border-indigo-300 bg-gradient-to-br from-indigo-50/90 via-white to-blue-50/60 shadow-xs">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-xs font-black uppercase tracking-wider text-indigo-950">BR (Brand Reminder)</span>
+                            <h3 id="stat-br-expense" class="text-2xl font-black text-indigo-950 mt-1 tracking-tight"> 97,110,000</h3>
+                        </div>
+                        <div class="w-11 h-11 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow-xs">
+                            <i data-lucide="gift" class="w-6 h-6 stroke-[2.5]"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center justify-between text-xs pt-2.5 border-t-2 border-indigo-200/80 text-indigo-950 font-bold">
+                        <span>Allocated: <b id="stat-br-limit" class="text-slate-950 font-black"> 97.1M</b></span>
+                        <span class="badge bg-indigo-100 border border-indigo-300 text-indigo-950 font-black">72 Items</span>
+                    </div>
+                </div>
+
+                <!-- PPM Budget & Spend (Light Emerald Segment) -->
+                <div class="stephub-card p-5 border-2 border-emerald-300 bg-gradient-to-br from-emerald-50/90 via-white to-teal-50/50 shadow-xs">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-xs font-black uppercase tracking-wider text-emerald-950">PPM (Printed Materials)</span>
+                            <h3 id="stat-ppm-expense" class="text-2xl font-black text-emerald-950 mt-1 tracking-tight"> 61,198,800</h3>
+                        </div>
+                        <div class="w-11 h-11 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-xs">
+                            <i data-lucide="file-text" class="w-6 h-6 stroke-[2.5]"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center justify-between text-xs pt-2.5 border-t-2 border-emerald-200/80 text-emerald-950 font-bold">
+                        <span>Allocated: <b id="stat-ppm-limit" class="text-slate-950 font-black"> 70.9M</b></span>
+                        <span class="badge bg-emerald-100 border border-emerald-300 text-emerald-950 font-black">68 Items</span>
+                    </div>
+                </div>
+
+                <!-- Remaining Balance Card (Light Amber Segment) -->
+                <div class="stephub-card p-5 border-2 border-amber-300 bg-gradient-to-br from-amber-50/90 via-white to-yellow-50/50 shadow-xs">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-xs font-black uppercase tracking-wider text-amber-950">Remaining Balance</span>
+                            <h3 id="stat-remaining-budget" class="text-2xl font-black text-amber-950 mt-1 tracking-tight"> 9,691,200</h3>
+                        </div>
+                        <div class="w-11 h-11 rounded-2xl bg-amber-500 text-white flex items-center justify-center shadow-xs">
+                            <i data-lucide="shield-check" class="w-6 h-6 stroke-[2.5]"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center justify-between text-xs pt-2.5 border-t-2 border-amber-200/80">
+                        <span class="text-amber-950 font-extrabold">Unallocated Balance</span>
+                        <span class="font-black text-amber-900 bg-amber-100 px-2 py-0.5 rounded-lg border border-amber-300">Safe Margin</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. StepHub Category Carousel & Navigation Bar (Clearly Distinguished Sections) -->
+            <div class="stephub-card p-5 space-y-5 border-2 border-slate-300">
+                
+                <!-- PRIMARY SEGMENT: Regular Plan vs Special Plan -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b-2 border-slate-200">
+                    <div class="flex items-center space-x-3 flex-wrap gap-y-2">
+                        <span class="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center space-x-1.5">
+                            <i data-lucide="layers" class="w-4 h-4 text-slate-800 stroke-[2.5]"></i>
+                            <span>Plan:</span>
+                        </span>
+                        <div class="inline-flex bg-slate-100 p-1.5 rounded-2xl border-2 border-slate-200 gap-1.5">
+                            <button onclick="setPlanType('Regular')" id="plan-btn-regular" class="px-5 py-2.5 rounded-xl text-xs font-black bg-slate-900 text-white border-2 border-slate-900 shadow-sm flex items-center space-x-2 transition-all">
+                                <i data-lucide="clipboard-check" class="w-4 h-4 text-blue-400 stroke-[2.5]"></i>
+                                <span>Regular Plan</span>
+                                <span id="regular-count-badge" class="bg-blue-600 text-white px-2 py-0.5 rounded-full text-[11px] font-black">140</span>
+                            </button>
+                            <button onclick="setPlanType('Special')" id="plan-btn-special" class="px-5 py-2.5 rounded-xl text-xs font-black bg-white text-slate-900 border-2 border-slate-300 hover:border-amber-500 hover:bg-amber-50 flex items-center space-x-2 transition-all">
+                                <i data-lucide="sparkles" class="w-4 h-4 text-amber-600 stroke-[2.5]"></i>
+                                <span>Special Plan</span>
+                                <span id="special-count-badge" class="bg-amber-100 text-amber-950 border border-amber-300 px-2 py-0.5 rounded-full text-[11px] font-black">0</span>
+                            </button>
+                            <button onclick="setPlanType('All')" id="plan-btn-all" class="px-4 py-2.5 rounded-xl text-xs font-black bg-white text-slate-900 border-2 border-slate-300 hover:border-slate-900 flex items-center space-x-1.5 transition-all">
+                                <span>All Combined</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Add Special Plan Item Button -->
+                    <button onclick="openAddSpecialItemModal()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs px-4 py-2.5 rounded-2xl border-2 border-amber-600 shadow-sm flex items-center space-x-2 transition-all">
+                        <i data-lucide="plus-circle" class="w-4 h-4 stroke-[3]"></i>
+                        <span>+ Add Special Plan Item</span>
+                    </button>
+                </div>
+
+                <!-- SECTION SEGMENT: BR vs PPM vs All -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b-2 border-slate-200">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-xs font-black text-slate-900 uppercase tracking-wider">Category:</span>
+                        <div class="inline-flex bg-slate-100 p-1.5 rounded-2xl border-2 border-slate-200 gap-1.5">
+                            <button onclick="setMaterialType('BR')" id="mat-btn-br" class="stephub-pill px-5 py-2.5 rounded-xl text-xs font-black bg-slate-900 text-white border-2 border-slate-900 shadow-sm flex items-center space-x-2">
+                                <i data-lucide="gift" class="w-4 h-4 text-blue-400 stroke-[2.5]"></i>
+                                <span>BR (Brand Reminder)</span>
+                                <span id="br-count-badge" class="bg-blue-600 text-white px-2 py-0.5 rounded-full text-[11px] font-black">72</span>
+                            </button>
+                            <button onclick="setMaterialType('PPM')" id="mat-btn-ppm" class="stephub-pill px-5 py-2.5 rounded-xl text-xs font-black bg-white text-slate-900 border-2 border-slate-300 hover:border-emerald-700 flex items-center space-x-2">
+                                <i data-lucide="printer" class="w-4 h-4 text-emerald-700 stroke-[2.5]"></i>
+                                <span>PPM (Printed Material)</span>
+                                <span id="ppm-count-badge" class="bg-slate-200 text-slate-950 px-2 py-0.5 rounded-full text-[11px] font-black">68</span>
+                            </button>
+                            <button onclick="setMaterialType('All')" id="mat-btn-all" class="stephub-pill px-4 py-2.5 rounded-xl text-xs font-black bg-white text-slate-900 border-2 border-slate-300 hover:border-slate-900 flex items-center space-x-1.5">
+                                <span>All Plan</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- View Switcher (Cards vs Table) & Export -->
+                    <div class="flex items-center space-x-3">
+                        <div class="inline-flex bg-slate-100 p-1.5 rounded-2xl border-2 border-slate-200 gap-1.5">
+                            <button onclick="setViewMode('cards')" id="view-mode-cards" class="px-4 py-2 rounded-xl text-xs font-black bg-slate-900 text-white border-2 border-slate-900 shadow-sm flex items-center space-x-1.5 transition-all">
+                                <i data-lucide="grid" class="w-4 h-4 stroke-[2.5]"></i>
+                                <span>Cards View</span>
+                            </button>
+                            <button onclick="setViewMode('table')" id="view-mode-table" class="px-4 py-2 rounded-xl text-xs font-black bg-white text-slate-900 border-2 border-slate-300 hover:border-slate-900 flex items-center space-x-1.5 transition-all">
+                                <i data-lucide="list" class="w-4 h-4 stroke-[2.5]"></i>
+                                <span>Table View</span>
+                            </button>
+                        </div>
+                        <button onclick="exportToExcel()" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-950 font-black text-xs px-4 py-2.5 rounded-2xl border-2 border-emerald-400 shadow-xs flex items-center space-x-2 transition-all">
+                            <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-700 stroke-[2.5]"></i>
+                            <span>Export Excel</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- MONTH SCRUBBER CAROUSEL (Distinct Borders & Colorful Quarterly Light Pastel Pills) -->
+                <div class="flex items-center space-x-2 overflow-x-auto custom-scrollbar pb-1 text-xs">
+                    <span class="text-slate-900 mr-2 flex items-center text-xs uppercase tracking-wider font-black whitespace-nowrap">
+                        <i data-lucide="calendar" class="w-4 h-4 mr-1.5 text-slate-700 stroke-[2.5]"></i> Month:
+                    </span>
+                    <button onclick="setFilterMonth('All')" class="month-pill active px-4 py-2 rounded-xl bg-slate-900 text-white border-2 border-slate-900 shadow-md font-black whitespace-nowrap transition-all" data-month="All">All 2027</button>
+                    <!-- Q1 Months (Light Sky Pastel) -->
+                    <button onclick="setFilterMonth('Jan')" class="month-pill px-4 py-2 rounded-xl bg-sky-50/80 text-sky-950 border-2 border-sky-300 hover:border-sky-600 hover:bg-sky-100 font-black whitespace-nowrap transition-all" data-month="Jan">Jan</button>
+                    <button onclick="setFilterMonth('Feb')" class="month-pill px-4 py-2 rounded-xl bg-sky-50/80 text-sky-950 border-2 border-sky-300 hover:border-sky-600 hover:bg-sky-100 font-black whitespace-nowrap transition-all" data-month="Feb">Feb</button>
+                    <button onclick="setFilterMonth('Mar')" class="month-pill px-4 py-2 rounded-xl bg-sky-50/80 text-sky-950 border-2 border-sky-300 hover:border-sky-600 hover:bg-sky-100 font-black whitespace-nowrap transition-all" data-month="Mar">Mar</button>
+                    <!-- Q2 Months (Light Emerald/Mint Pastel) -->
+                    <button onclick="setFilterMonth('Apr')" class="month-pill px-4 py-2 rounded-xl bg-emerald-50/80 text-emerald-950 border-2 border-emerald-300 hover:border-emerald-600 hover:bg-emerald-100 font-black whitespace-nowrap transition-all" data-month="Apr">Apr</button>
+                    <button onclick="setFilterMonth('May')" class="month-pill px-4 py-2 rounded-xl bg-emerald-50/80 text-emerald-950 border-2 border-emerald-300 hover:border-emerald-600 hover:bg-emerald-100 font-black whitespace-nowrap transition-all" data-month="May">May</button>
+                    <button onclick="setFilterMonth('Jun')" class="month-pill px-4 py-2 rounded-xl bg-emerald-50/80 text-emerald-950 border-2 border-emerald-300 hover:border-emerald-600 hover:bg-emerald-100 font-black whitespace-nowrap transition-all" data-month="Jun">Jun</button>
+                    <!-- Q3 Months (Light Warm Amber Pastel) -->
+                    <button onclick="setFilterMonth('Jul')" class="month-pill px-4 py-2 rounded-xl bg-amber-50/80 text-amber-950 border-2 border-amber-300 hover:border-amber-600 hover:bg-amber-100 font-black whitespace-nowrap transition-all" data-month="Jul">Jul</button>
+                    <button onclick="setFilterMonth('Aug')" class="month-pill px-4 py-2 rounded-xl bg-amber-50/80 text-amber-950 border-2 border-amber-300 hover:border-amber-600 hover:bg-amber-100 font-black whitespace-nowrap transition-all" data-month="Aug">Aug</button>
+                    <button onclick="setFilterMonth('Sep')" class="month-pill px-4 py-2 rounded-xl bg-amber-50/80 text-amber-950 border-2 border-amber-300 hover:border-amber-600 hover:bg-amber-100 font-black whitespace-nowrap transition-all" data-month="Sep">Sep</button>
+                    <!-- Q4 Months (Light Violet/Purple Pastel) -->
+                    <button onclick="setFilterMonth('Oct')" class="month-pill px-4 py-2 rounded-xl bg-purple-50/80 text-purple-950 border-2 border-purple-300 hover:border-purple-600 hover:bg-purple-100 font-black whitespace-nowrap transition-all" data-month="Oct">Oct</button>
+                    <button onclick="setFilterMonth('Nov')" class="month-pill px-4 py-2 rounded-xl bg-purple-50/80 text-purple-950 border-2 border-purple-300 hover:border-purple-600 hover:bg-purple-100 font-black whitespace-nowrap transition-all" data-month="Nov">Nov</button>
+                    <button onclick="setFilterMonth('Dec')" class="month-pill px-4 py-2 rounded-xl bg-purple-50/80 text-purple-950 border-2 border-purple-300 hover:border-purple-600 hover:bg-purple-100 font-black whitespace-nowrap transition-all" data-month="Dec">Dec</button>
+                </div>
+
+                <!-- SECONDARY FILTER OPTIONS (Light Pastel Colored Segments) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 bg-gradient-to-r from-blue-50/60 via-purple-50/50 to-emerald-50/60 border-2 border-indigo-200/90 rounded-2xl text-xs">
+                    <div>
+                        <label class="block text-xs font-black text-blue-950 uppercase tracking-wider mb-1.5 flex items-center space-x-1">
+                            <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                            <span>Brand</span>
+                        </label>
+                        <select id="filter-brand" onchange="applyFilters()" class="w-full bg-white border-2 border-blue-300 rounded-xl px-3.5 py-2.5 font-black text-slate-900 focus:outline-none focus:border-blue-600 cursor-pointer shadow-xs">
+                            <option value="All">All Brands (Exium & MUPS)</option>
+                            <option value="Exium">Exium</option>
+                            <option value="Exium MUPS">Exium MUPS</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-black text-purple-950 uppercase tracking-wider mb-1.5 flex items-center space-x-1">
+                            <span class="w-2 h-2 rounded-full bg-purple-600"></span>
+                            <span id="filter-category-label">BR Category</span>
+                        </label>
+                        <select id="filter-category" onchange="applyFilters()" class="w-full bg-white border-2 border-purple-300 rounded-xl px-3.5 py-2.5 font-black text-slate-900 focus:outline-none focus:border-purple-600 cursor-pointer shadow-xs">
+                            <option value="All">All BR Categories</option>
+                            <option value="Special BR">Special BR</option>
+                            <option value="Regular BR">Regular BR</option>
+                            <option value="Call Gadget">Call Gadget</option>
+                            <option value="Special Item">Special Item</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-black text-amber-950 uppercase tracking-wider mb-1.5 flex items-center space-x-1">
+                            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                            <span>Approval State</span>
+                        </label>
+                        <select id="filter-status" onchange="applyFilters()" class="w-full bg-white border-2 border-amber-300 rounded-xl px-3.5 py-2.5 font-black text-slate-900 focus:outline-none focus:border-amber-600 cursor-pointer shadow-xs">
+                            <option value="All">All Approval States</option>
+                            <option value="Approved">Approved Only</option>
+                            <option value="Pending">Pending Approval</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-black text-slate-950 uppercase tracking-wider mb-1.5 flex items-center space-x-1">
+                            <span class="w-2 h-2 rounded-full bg-slate-700"></span>
+                            <span>Search Items / Codes</span>
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="filter-search" oninput="debounce(applyFilters, 250)()" placeholder="Search item, name, code..." class="w-full bg-white border-2 border-slate-300 rounded-xl pl-10 pr-3.5 py-2.5 text-xs font-black text-slate-900 placeholder-slate-500 focus:outline-none focus:border-slate-900 shadow-xs">
+                            <i data-lucide="search" class="w-4 h-4 text-slate-700 stroke-[2.5] absolute left-3 top-3"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION SUMMARY FOOTER -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pt-3 border-t-2 border-slate-200 text-xs">
+                    <div class="text-slate-800 font-extrabold">
+                        Showing <span id="filtered-items-count" class="font-black text-slate-950 text-sm">0</span> items | Total Section Value: <span id="filtered-items-value" class="font-black text-blue-900 text-sm"> 0</span>
+                    </div>
+                    <div class="text-xs text-slate-800 font-black uppercase tracking-wider">
+                        Named Items: <span id="section-finalized-count" class="text-emerald-800 font-black text-sm">0 / 0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. CARDS CATALOG VIEW (StepHub Showcase Layout) -->
+            <div id="items-cards-view" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Dynamically populated via JS -->
+            </div>
+
+            <!-- 4. TABLE VIEW (StepHub Admin Data Table Layout) -->
+            <div id="items-table-view" class="hidden stephub-card overflow-hidden border-2 border-slate-300">
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-950 font-black border-b-2 border-slate-300 uppercase tracking-wider text-xs">
+                                <th class="py-4 px-4">Brand & Category</th>
+                                <th class="py-4 px-4 w-1/3">Assigned Item / Gadget Name</th>
+                                <th class="py-4 px-3">Month</th>
+                                <th class="py-4 px-3 text-right">Quantity</th>
+                                <th class="py-4 px-3 text-right">Unit Price</th>
+                                <th class="py-4 px-3 text-right">Total (BDT)</th>
+                                <th class="py-4 px-3 text-center">Approval</th>
+                                <th class="py-4 px-4">PMMD Lead & PO</th>
+                                <th class="py-4 px-3 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="items-table-body" class="divide-y-2 divide-slate-100">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: BUDGET & FINANCIAL ANALYTICS ==================== -->
+        <section id="tab-dashboard" class="hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Monthly Spend Curve -->
+                <div class="stephub-card p-6 lg:col-span-2 border-2 border-slate-300">
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h4 class="font-black text-slate-950 text-base">Monthly Planned Spend Curve (BDT)</h4>
+                            <p class="text-xs text-slate-700 font-bold">Exium vs Exium MUPS month-by-month financial projection</p>
+                        </div>
+                        <span class="badge bg-slate-900 text-white font-black">Jan - Dec 2027</span>
+                    </div>
+                    <div class="h-64">
+                        <canvas id="monthlyChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Category Breakdown -->
+                <div class="stephub-card p-6 border-2 border-slate-300">
+                    <h4 class="font-black text-slate-950 text-base mb-1">Expense by Category</h4>
+                    <p class="text-xs text-slate-700 font-bold mb-4">Share of BR vs Pens vs Pads vs Sales Aid</p>
+                    <div class="h-64 flex items-center justify-center">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Logs -->
+            <div class="stephub-card p-6 border-2 border-slate-300">
+                <h4 class="font-black text-slate-950 text-sm mb-3 flex items-center space-x-2">
+                    <i data-lucide="history" class="w-4 h-4 text-blue-700 stroke-[2.5]"></i>
+                    <span>Real-time Change & Audit Feed</span>
+                </h4>
+                <div id="recent-activities-list" class="divide-y-2 divide-slate-100 text-xs font-semibold"></div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: STORE & LOGISTICS ==================== -->
+        <section id="tab-store" class="hidden space-y-5">
+            <div class="bg-slate-900 text-white p-6 rounded-3xl shadow-md border-2 border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <span class="badge bg-amber-400 text-slate-950 font-black mb-2">Warehouse Module</span>
+                    <h3 class="font-black text-xl tracking-tight">Store Receipt & Field Dispersion Desk</h3>
+                    <p class="text-xs text-slate-200 font-bold mt-1">Responsible Lead: <b>Md. Rakibuzzaman (Sr. Asst. Manager, PMMD)</b>. Record warehouse intake, received quantity, and field dispersion.</p>
+                </div>
+                <div class="text-xs bg-slate-800 border-2 border-slate-700 px-4 py-2.5 rounded-2xl">
+                    <span class="text-slate-300 block text-[11px] uppercase font-black">Contact Person:</span>
+                    <span class="font-black text-white text-sm">01916405683</span> | <span class="text-blue-300 font-bold">md.rakibuzzaman@radiant.com.bd</span>
+                </div>
+            </div>
+
+            <!-- Dynamic Role Permission Banner -->
+            <div id="store-access-banner" class="p-4 rounded-2xl border-2 transition-all shadow-xs">
+                <!-- Injected via JS based on currentRole -->
+            </div>
+
+            <!-- Store Quick Filter & Search Bar -->
+            <div class="bg-white p-4 rounded-2xl border-2 border-slate-200 flex flex-col md:flex-row items-center justify-between gap-3 shadow-2xs">
+                <div class="relative w-full md:w-80">
+                    <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
+                    <input type="text" id="store-search-input" oninput="renderStoreTab()" placeholder="Search items by name, category..." class="w-full bg-slate-50 border-2 border-slate-200 focus:border-slate-800 rounded-xl pl-9 pr-3 py-2 text-xs font-bold text-slate-950 shadow-2xs focus:outline-none">
+                </div>
+                <div class="flex items-center space-x-2 w-full md:w-auto flex-wrap gap-y-2">
+                    <select id="store-filter-brand" onchange="renderStoreTab()" class="bg-slate-50 border-2 border-slate-200 rounded-xl px-3 py-2 text-xs font-black text-slate-900 shadow-2xs">
+                        <option value="All">All Brands</option>
+                        <option value="Exium">Exium</option>
+                        <option value="Exium MUPS">Exium MUPS</option>
+                    </select>
+                    <select id="store-filter-status" onchange="renderStoreTab()" class="bg-slate-50 border-2 border-slate-200 rounded-xl px-3 py-2 text-xs font-black text-slate-900 shadow-2xs">
+                        <option value="All">All Store Status</option>
+                        <option value="Not Received">Not Received</option>
+                        <option value="Partly Received">Partly Received</option>
+                        <option value="Fully Received">Fully Received</option>
+                    </select>
+                    <select id="store-filter-dispersion" onchange="renderStoreTab()" class="bg-slate-50 border-2 border-slate-200 rounded-xl px-3 py-2 text-xs font-black text-slate-900 shadow-2xs">
+                        <option value="All">All Dispersion Status</option>
+                        <option value="Not Dispersed">Not Dispersed</option>
+                        <option value="Partly Dispersed">Partly Dispersed</option>
+                        <option value="Fully Dispersed">Fully Dispersed</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="store-items-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Populated via JS -->
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: PACKAGING DESIGN ==================== -->
+        <section id="tab-design" class="hidden space-y-5">
+            <div class="bg-slate-900 text-white p-6 rounded-3xl shadow-md border-2 border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <span class="badge bg-purple-400 text-purple-950 font-black mb-2">Design Studio</span>
+                    <h3 class="font-black text-xl tracking-tight">Packaging Artwork & Sample Design Desk</h3>
+                    <p class="text-xs text-slate-200 font-bold mt-1">Responsible Lead: <b>Md. Subhani Sujon (Asst. Manager, PMMD)</b>. Oversee box artwork, guidelines & visual approvals.</p>
+                </div>
+                <div class="text-xs bg-slate-800 border-2 border-slate-700 px-4 py-2.5 rounded-2xl">
+                    <span class="text-slate-300 block text-[11px] uppercase font-black">Contact Person:</span>
+                    <span class="font-black text-white text-sm">01795326161</span> | <span class="text-purple-300 font-bold">subhani.sujon@radiant.com.bd</span>
+                </div>
+            </div>
+
+            <div id="design-items-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Populated via JS -->
+            </div>
+        </section>
+
+        <!-- ==================== TAB 5: PMMD TEAM DIRECTORY ==================== -->
+        <section id="tab-team" class="hidden space-y-5">
+            <div class="flex justify-between items-center bg-white p-5 rounded-2xl border-2 border-slate-300">
+                <div>
+                    <h3 class="font-black text-lg text-slate-950">Promotional Material Management Department (PMMD)</h3>
+                    <p class="text-xs text-slate-700 font-bold">Core stakeholders responsible for item pricing, vendor PO, scheduling, and distribution</p>
+                </div>
+                <button onclick="openAddTeamMemberModal()" class="bg-slate-900 hover:bg-slate-800 text-white font-black text-xs px-4 py-2.5 rounded-xl border-2 border-slate-900 flex items-center space-x-1.5 shadow-xs transition-all">
+                    <i data-lucide="user-plus" class="w-4 h-4 stroke-[2.5]"></i>
+                    <span>Add Member</span>
+                </button>
+            </div>
+
+            <div id="team-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Populated via JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================== MODALS ==================== -->
+
+    <!-- 1. ITEM EDIT / SPECIFICATION MODAL -->
+    <div id="item-modal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-3xl w-full p-6 shadow-2xl space-y-5 max-h-[92vh] overflow-y-auto custom-scrollbar border-2 border-slate-300">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-start border-b-2 border-slate-200 pb-4">
+                <div>
+                    <div class="flex items-center space-x-2.5 flex-wrap gap-y-2">
+                        <span id="modal-badge-plan"></span>
+                        <span id="modal-badge-mat" class="badge bg-slate-900 text-white font-black text-xs">BR</span>
+                        <div id="modal-badge-brand"></div>
+                        <span id="modal-badge-category" class="badge bg-slate-100 text-slate-900 border-2 border-slate-300 font-black text-xs">Special BR</span>
+                        <span id="modal-badge-month" class="badge bg-amber-100 text-amber-950 border-2 border-amber-300 font-black text-xs">Jan 2027</span>
+                    </div>
+                    <h3 id="modal-title" class="text-xl font-black text-slate-950 mt-2 tracking-tight">Specify Item & Procurement Details</h3>
+                </div>
+                <button onclick="closeModal('item-modal')" class="text-slate-700 hover:text-slate-950 p-1.5 rounded-xl hover:bg-slate-100 border-2 border-slate-200 transition-all">
+                    <i data-lucide="x" class="w-6 h-6 stroke-[2.5]"></i>
+                </button>
+            </div>
+
+            <!-- Form -->
+            <form id="item-edit-form" onsubmit="saveItemEdit(event)" class="space-y-4 text-xs">
+                <input type="hidden" id="edit-item-id">
+
+                <!-- SECTION 1: Item Name & Dual Codes (Light Warm Amber Segment) -->
+                <div class="bg-amber-50/80 p-4 rounded-2xl border-2 border-amber-300 space-y-3 shadow-2xs">
+                    <div class="flex justify-between items-center">
+                        <label class="block font-black text-amber-950 uppercase text-xs tracking-wider flex items-center space-x-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                            <span>1. Promotional Item / Gadget Name <span class="text-rose-600">*</span></span>
+                        </label>
+                        <span class="text-[11px] font-black text-amber-900 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-md">Physical Specification</span>
+                    </div>
+                    <input type="text" id="edit-item-name" required placeholder="Enter physical item name" class="w-full bg-white border-2 border-amber-300 rounded-xl px-3.5 py-2.5 text-xs font-black text-slate-950 placeholder-amber-900/50 focus:outline-none focus:border-amber-600 shadow-2xs">
+
+                    <div class="grid grid-cols-2 gap-3 pt-1">
+                        <div>
+                            <label class="block font-black text-blue-950 mb-1 flex items-center space-x-1">
+                                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                <span>SAP Code</span>
+                            </label>
+                            <input type="text" id="edit-sap-code" placeholder="Enter SAP Code" class="w-full bg-white border-2 border-blue-300 rounded-xl px-3 py-2 font-mono font-black text-blue-950 shadow-2xs">
+                        </div>
+                        <div>
+                            <label class="block font-black text-purple-950 mb-1 flex items-center space-x-1">
+                                <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                                <span>Legacy Code</span>
+                            </label>
+                            <input type="text" id="edit-legacy-code" placeholder="Enter Legacy Code" class="w-full bg-white border-2 border-purple-300 rounded-xl px-3 py-2 font-mono font-black text-purple-950 shadow-2xs">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-black text-amber-950 mb-1 flex items-center space-x-1">
+                            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                            <span>Approval Reference / Special Purpose</span>
+                        </label>
+                        <input type="text" id="edit-approval-note" placeholder="Prior approval reference or justification" class="w-full bg-white border-2 border-amber-300 rounded-xl px-3 py-2 font-bold text-slate-900 shadow-2xs">
+                    </div>
+                </div>
+
+                <!-- SECTION 2: Quantity & Price (Light Cyan Segment) -->
+                <div class="bg-cyan-50/80 p-4 rounded-2xl border-2 border-cyan-300 space-y-3 shadow-2xs">
+                    <label class="block font-black text-cyan-950 uppercase text-xs tracking-wider flex items-center space-x-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-cyan-600"></span>
+                        <span>2. Quantity & Price Verification</span>
+                    </label>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div>
+                            <label class="block font-black text-cyan-950 mb-1">Planned Quantity</label>
+                            <input type="number" id="edit-quantity" oninput="calculateEditTotal()" class="w-full bg-white border-2 border-cyan-300 rounded-xl px-3 py-2 font-black text-slate-950 shadow-2xs">
+                        </div>
+                        <div>
+                            <label class="block font-black text-rose-950 mb-1">Unit Price (BDT)</label>
+                            <input type="number" step="0.5" id="edit-unit-price" oninput="calculateEditTotal()" class="w-full bg-white border-2 border-rose-300 rounded-xl px-3 py-2 font-black text-slate-950 shadow-2xs">
+                        </div>
+                        <div>
+                            <label class="block font-black text-emerald-950 mb-1">Total Expense (BDT)</label>
+                            <input type="text" id="edit-total-price" readonly class="w-full bg-emerald-100/70 border-2 border-emerald-300 rounded-xl px-3 py-2 font-black text-emerald-950 shadow-2xs">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: PMMD Workflow & PO Details (Light Indigo Segment) -->
+                <div class="bg-indigo-50/70 p-4 rounded-2xl border-2 border-indigo-300 space-y-3 shadow-2xs">
+                    <label class="block font-black text-indigo-950 uppercase text-xs tracking-wider flex items-center space-x-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
+                        <span>3. PMMD Communication & Purchase Order (PO)</span>
+                    </label>
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                        <div>
+                            <label class="block font-black text-indigo-950 mb-1">PMMD In-Charge</label>
+                            <select id="edit-responsible-id" class="w-full bg-white border-2 border-indigo-300 rounded-xl px-2.5 py-2 font-bold text-slate-950 shadow-2xs">
+                                <option value="">-- Unassigned --</option>
+                                <option value="2">Md. Zahid Hasan (Sr. Asst. Mgr)</option>
+                                <option value="3">Tanim Bin Mahmud (Asst. Mgr)</option>
+                                <option value="4">Md Whahedur Rahman Mony (Officer)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-black text-indigo-950 mb-1">PO Status</label>
+                            <select id="edit-po-status" class="w-full bg-white border-2 border-indigo-300 rounded-xl px-2.5 py-2 font-bold text-slate-950 shadow-2xs">
+                                <option value="Not Initiated">Not Initiated</option>
+                                <option value="PO In Progress">PO In Progress</option>
+                                <option value="PO Issued">PO Issued</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-black text-indigo-950 mb-1">PO Number</label>
+                            <input type="text" id="edit-po-number" placeholder="PO-2027-XXXX" class="w-full bg-white border-2 border-indigo-300 rounded-xl px-3 py-2 font-mono font-bold text-slate-950 shadow-2xs">
+                        </div>
+                        <div>
+                            <label class="block font-black text-indigo-950 mb-1">PO Date</label>
+                            <input type="date" id="edit-po-date" class="w-full bg-white border-2 border-indigo-300 rounded-xl px-2.5 py-2 font-bold text-slate-950 shadow-2xs">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 pt-1">
+                        <div>
+                            <label class="block font-black text-indigo-950 mb-1">Expected Availability / ETA</label>
+                            <input type="date" id="edit-expected-arrival" class="w-full bg-white border-2 border-indigo-300 rounded-xl px-3 py-2 font-bold text-slate-950 shadow-2xs">
+                        </div>
+                        <div>
+                            <label class="block font-black text-indigo-950 mb-1">Field Delivery Date</label>
+                            <input type="date" id="edit-delivery-date" class="w-full bg-white border-2 border-indigo-300 rounded-xl px-3 py-2 font-bold text-slate-950 shadow-2xs">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 4: Allocation & Store Inputs (Light Teal & Light Orange Segments) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="bg-teal-50/80 p-4 rounded-2xl border-2 border-teal-300 space-y-2 shadow-2xs">
+                        <label class="block font-black text-teal-950 text-xs uppercase flex items-center space-x-1.5">
+                            <span class="w-2 h-2 rounded-full bg-teal-600"></span>
+                            <span>Field Allocation (Excel List)</span>
+                        </label>
+                        <select id="edit-allocation-status" class="w-full bg-white border-2 border-teal-300 rounded-xl px-2.5 py-2 font-bold text-slate-950 shadow-2xs">
+                            <option value="Pending">Allocation Pending</option>
+                            <option value="Draft Prepared">Draft Prepared</option>
+                            <option value="Allocation Finalized">Allocation Finalized (Excel Sent)</option>
+                        </select>
+                        <input type="text" id="edit-allocation-notes" placeholder="Allocation notes or dispatch instructions..." class="w-full bg-white border-2 border-teal-300 rounded-xl px-3 py-2 font-bold text-slate-950 shadow-2xs">
+                    </div>
+
+                    <div class="bg-amber-50/80 p-4 rounded-2xl border-2 border-amber-300 space-y-2.5 shadow-2xs">
+                        <div class="flex items-center justify-between">
+                            <label class="block font-black text-amber-950 text-xs uppercase flex items-center space-x-1.5">
+                                <span class="w-2 h-2 rounded-full bg-amber-600"></span>
+                                <span>Warehouse & Dispersion Desk</span>
+                            </label>
+                            <span id="modal-store-lead-badge" class="text-[10px] font-black px-2 py-0.5 rounded bg-amber-200 text-amber-950 border border-amber-400">Md. Rakibuzzaman</span>
+                        </div>
+                        <div id="modal-store-role-warning" class="hidden text-xs font-black text-amber-950 bg-amber-200/90 p-2.5 rounded-xl border border-amber-400 flex items-center space-x-1.5">
+                            <i data-lucide="lock" class="w-4 h-4 text-amber-800 stroke-[2.5]"></i>
+                            <span>Entry restricted: Only Md. Rakibuzzaman (Store & Logistics) can update these fields.</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <!-- Store Receipt -->
+                            <div class="bg-white/90 p-3 rounded-xl border-2 border-amber-200 space-y-2 shadow-2xs">
+                                <label class="block text-[11px] font-black text-slate-950 uppercase flex items-center justify-between">
+                                    <span>1. Store Receipt</span>
+                                    <span class="text-[10px] text-blue-700 font-bold">Intake</span>
+                                </label>
+                                <select id="edit-store-status" onchange="onModalStoreStatusChange(this.value)" class="w-full bg-white border-2 border-amber-300 rounded-xl px-2.5 py-1.5 text-xs font-black text-slate-950 shadow-2xs">
+                                    <option value="Not Received">Not Received</option>
+                                    <option value="Partly Received">Partly Received</option>
+                                    <option value="Fully Received">Fully Received</option>
+                                </select>
+                                <div id="modal-store-fields" class="hidden space-y-2 pt-1 border-t border-amber-200">
+                                    <div id="modal-received-qty-container" class="hidden">
+                                        <label class="block text-[10px] font-black text-slate-800">Received Qty</label>
+                                        <input type="number" id="edit-received-qty" min="1" placeholder="Enter Received Qty" class="w-full bg-white border-2 border-amber-300 rounded-xl px-2.5 py-1 text-xs font-black text-slate-950 shadow-2xs">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-black text-slate-800">Store-In Date</label>
+                                        <input type="date" id="edit-store-in-date" class="w-full bg-white border-2 border-amber-300 rounded-xl px-2.5 py-1 text-xs font-bold text-slate-900 shadow-2xs">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Dispersion -->
+                            <div class="bg-white/90 p-3 rounded-xl border-2 border-amber-200 space-y-2 shadow-2xs">
+                                <label class="block text-[11px] font-black text-slate-950 uppercase flex items-center justify-between">
+                                    <span>2. Field Dispersion</span>
+                                    <span class="text-[10px] text-emerald-700 font-bold">Field Dispatch</span>
+                                </label>
+                                <select id="edit-dispersion-status" onchange="onModalDispersionStatusChange(this.value)" class="w-full bg-white border-2 border-amber-300 rounded-xl px-2.5 py-1.5 text-xs font-black text-slate-950 shadow-2xs">
+                                    <option value="Not Dispersed">Not Dispersed</option>
+                                    <option value="Partly Dispersed">Partly Dispersed</option>
+                                    <option value="Fully Dispersed">Fully Dispersed</option>
+                                </select>
+                                <div id="modal-dispersion-fields" class="hidden space-y-2 pt-1 border-t border-amber-200">
+                                    <div id="modal-dispersed-qty-container" class="hidden">
+                                        <label class="block text-[10px] font-black text-slate-800">Dispersed Qty</label>
+                                        <input type="number" id="edit-dispersed-qty" min="1" placeholder="Enter Dispersed Qty" class="w-full bg-white border-2 border-amber-300 rounded-xl px-2.5 py-1 text-xs font-black text-slate-950 shadow-2xs">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-black text-slate-800">Dispersion Date</label>
+                                        <input type="date" id="edit-store-disperse-date" class="w-full bg-white border-2 border-amber-300 rounded-xl px-2.5 py-1 text-xs font-bold text-slate-900 shadow-2xs">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 5: Image Upload (Light Rose Segment) -->
+                <div class="bg-rose-50/80 p-4 rounded-2xl border-2 border-rose-300 space-y-2 shadow-2xs">
+                    <label class="block font-black text-rose-950 text-xs uppercase flex items-center space-x-1.5">
+                        <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                        <span>Promotional Item Photo / Mockup</span>
+                    </label>
+                    <div class="flex items-center space-x-4">
+                        <div id="edit-image-preview-container" class="w-16 h-16 rounded-2xl bg-white border-2 border-rose-300 p-1 flex items-center justify-center overflow-hidden shadow-xs">
+                            <!-- Preview injected via JS -->
+                        </div>
+                        <input type="file" id="item-file-input" onchange="uploadItemImage(this)" class="text-xs font-bold text-slate-900 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-2 file:border-slate-900 file:bg-slate-900 file:text-white file:font-black hover:file:bg-black cursor-pointer">
+                        <input type="hidden" id="edit-item-image">
+                    </div>
+                </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex justify-between items-center pt-3 border-t-2 border-slate-200">
+                    <div class="flex items-center space-x-2">
+                        <button type="button" onclick="quickApproveFromModal('Approved')" class="bg-emerald-700 hover:bg-emerald-800 text-white font-black px-4 py-2.5 rounded-2xl border-2 border-emerald-800 flex items-center space-x-1.5 shadow-sm">
+                            <i data-lucide="check" class="w-4 h-4 stroke-[3]"></i>
+                            <span>Approve Item</span>
+                        </button>
+                        <button type="button" onclick="quickApproveFromModal('Pending')" class="bg-white hover:bg-slate-100 text-slate-900 font-black px-4 py-2.5 rounded-2xl border-2 border-slate-300">
+                            <span>Pending</span>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center space-x-2">
+                        <button type="button" id="modal-delete-btn" onclick="deleteCurrentItem()" class="hidden bg-rose-100 hover:bg-rose-200 text-rose-950 font-black px-4 py-2.5 rounded-2xl border-2 border-rose-300 flex items-center space-x-1.5 transition-all">
+                            <i data-lucide="trash-2" class="w-4 h-4 stroke-[2.5]"></i>
+                            <span>Delete Item</span>
+                        </button>
+                        <button type="button" onclick="closeModal('item-modal')" class="px-5 py-2.5 rounded-2xl border-2 border-slate-300 text-slate-900 font-black hover:bg-slate-100">Cancel</button>
+                        <button type="submit" class="bg-slate-900 hover:bg-black text-white font-black px-6 py-2.5 rounded-2xl border-2 border-slate-900 shadow-sm">Save Changes</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Discussion Thread (Light Lavender Segment) -->
+            <div class="bg-violet-50/70 p-4 rounded-2xl border-2 border-violet-200 space-y-2 text-xs shadow-2xs">
+                <span class="font-black text-violet-950 uppercase tracking-wider text-xs flex items-center space-x-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-violet-600"></span>
+                    <span>Cross-Department Discussion (SMD / PMMD / Store)</span>
+                </span>
+                <div id="modal-comments-list" class="space-y-2 max-h-36 overflow-y-auto custom-scrollbar p-1"></div>
+                <div class="flex space-x-2 pt-1">
+                    <input type="text" id="new-comment-input" placeholder="Type a note, approval instruction, or spec..." class="flex-1 bg-white border-2 border-violet-300 rounded-xl px-3.5 py-2 text-xs font-bold text-slate-900 placeholder-violet-900/40 shadow-2xs">
+                    <button onclick="postComment()" class="bg-violet-900 hover:bg-violet-950 text-white font-black px-5 py-2 rounded-xl border-2 border-violet-900 shadow-2xs">Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. CLONE YEAR MODAL -->
+    <div id="clone-year-modal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 border-2 border-slate-300">
+            <div class="flex justify-between items-center border-b-2 border-slate-200 pb-3">
+                <h3 class="text-base font-black text-slate-950 flex items-center space-x-2">
+                    <i data-lucide="copy" class="w-4 h-4 text-blue-700 stroke-[2.5]"></i>
+                    <span>Initialize Next Year Plan</span>
+                </h3>
+                <button onclick="closeModal('clone-year-modal')" class="text-slate-700 hover:text-slate-950">
+                    <i data-lucide="x" class="w-5 h-5 stroke-[2.5]"></i>
+                </button>
+            </div>
+            <form onsubmit="handleCloneYear(event)" class="space-y-3 text-xs">
+                <p class="text-slate-800 font-bold leading-relaxed">
+                    This will clone the entire promotional category structure (BR and PPM items) from 2027 into a fresh, unassigned plan for the new year.
+                </p>
+                <div>
+                    <label class="block font-black text-slate-900 mb-1">Target Plan Year</label>
+                    <input type="number" id="clone-target-year" value="2028" required class="w-full bg-white border-2 border-slate-300 rounded-xl px-3.5 py-2 font-black text-blue-900 text-sm">
+                </div>
+                <div class="flex justify-end space-x-2 pt-2 border-t-2 border-slate-200">
+                    <button type="button" onclick="closeModal('clone-year-modal')" class="px-4 py-2 rounded-2xl border-2 border-slate-300 font-black text-slate-900">Cancel</button>
+                    <button type="submit" class="bg-slate-900 hover:bg-black text-white font-black px-5 py-2 rounded-2xl border-2 border-slate-900 shadow-sm">Initialize</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 3. BUDGET MODAL -->
+    <div id="budget-modal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 border-2 border-slate-300">
+            <div class="flex justify-between items-center border-b-2 border-slate-200 pb-3">
+                <h3 class="text-base font-black text-slate-950 flex items-center space-x-2">
+                    <i data-lucide="wallet" class="w-4 h-4 text-blue-700 stroke-[2.5]"></i>
+                    <span>Configure Promotional Budget</span>
+                </h3>
+                <button onclick="closeModal('budget-modal')" class="text-slate-700 hover:text-slate-950">
+                    <i data-lucide="x" class="w-5 h-5 stroke-[2.5]"></i>
+                </button>
+            </div>
+            <form onsubmit="saveBudgetSettings(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-black text-slate-900 mb-1">Total Annual Budget (BDT)</label>
+                    <input type="number" id="setting-total-budget" required class="w-full bg-white border-2 border-slate-300 rounded-xl px-3.5 py-2 font-black text-slate-950 text-sm">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-black text-blue-950 mb-1">BR Sub-Budget (BDT)</label>
+                        <input type="number" id="setting-br-budget" required class="w-full bg-white border-2 border-blue-300 rounded-xl px-3 py-2 font-black text-blue-900">
+                    </div>
+                    <div>
+                        <label class="block font-black text-emerald-950 mb-1">PPM Sub-Budget (BDT)</label>
+                        <input type="number" id="setting-ppm-budget" required class="w-full bg-white border-2 border-emerald-300 rounded-xl px-3 py-2 font-black text-emerald-900">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-black text-slate-900 mb-1">Exium Target (BDT)</label>
+                        <input type="number" id="setting-exium-budget" required class="w-full bg-white border-2 border-slate-300 rounded-xl px-3 py-2 font-black text-slate-900">
+                    </div>
+                    <div>
+                        <label class="block font-black text-purple-950 mb-1">Exium MUPS (BDT)</label>
+                        <input type="number" id="setting-mups-budget" required class="w-full bg-white border-2 border-purple-300 rounded-xl px-3 py-2 font-black text-purple-900">
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-2 pt-2 border-t-2 border-slate-200">
+                    <button type="button" onclick="closeModal('budget-modal')" class="px-4 py-2 rounded-2xl border-2 border-slate-300 font-black text-slate-900">Cancel</button>
+                    <button type="submit" class="bg-slate-900 hover:bg-black text-white font-black px-5 py-2 rounded-2xl border-2 border-slate-900 shadow-sm">Save Budget</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. TEAM MEMBER MODAL -->
+    <div id="team-modal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 border-2 border-slate-300">
+            <div class="flex justify-between items-center border-b-2 border-slate-200 pb-3">
+                <h3 class="text-base font-black text-slate-950 flex items-center space-x-2">
+                    <i data-lucide="user-plus" class="w-4 h-4 text-blue-700 stroke-[2.5]"></i>
+                    <span>Add PMMD / SMD Contact</span>
+                </h3>
+                <button onclick="closeModal('team-modal')" class="text-slate-700 hover:text-slate-950">
+                    <i data-lucide="x" class="w-5 h-5 stroke-[2.5]"></i>
+                </button>
+            </div>
+            <form onsubmit="saveNewTeamMember(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-black text-slate-900 mb-1">Full Name</label>
+                    <input type="text" id="add-member-name" required placeholder="Md. Name" class="w-full bg-white border-2 border-slate-300 rounded-xl px-3.5 py-2 font-bold text-slate-900">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-black text-slate-900 mb-1">Designation</label>
+                        <input type="text" id="add-member-desig" required placeholder="Asst. Manager" class="w-full bg-white border-2 border-slate-300 rounded-xl px-3 py-2 font-bold text-slate-900">
+                    </div>
+                    <div>
+                        <label class="block font-black text-slate-900 mb-1">Department</label>
+                        <select id="add-member-dept" class="w-full bg-white border-2 border-slate-300 rounded-xl px-3 py-2 font-bold text-slate-900">
+                            <option value="PMMD">PMMD</option>
+                            <option value="SMD">SMD</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-black text-slate-900 mb-1">Role</label>
+                    <select id="add-member-role" class="w-full bg-white border-2 border-slate-300 rounded-xl px-3 py-2 font-bold text-slate-900">
+                        <option value="PMMD Procurement">PMMD Procurement</option>
+                        <option value="Packaging Design">Packaging Design</option>
+                        <option value="Store & Logistics">Store & Logistics</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-black text-slate-900 mb-1">Email</label>
+                    <input type="email" id="add-member-email" required placeholder="email@radiant.com.bd" class="w-full bg-white border-2 border-slate-300 rounded-xl px-3 py-2 font-bold text-slate-900">
+                </div>
+                <div>
+                    <label class="block font-black text-slate-900 mb-1">Mobile</label>
+                    <input type="text" id="add-member-mobile" required placeholder="01XXXXXXXXX" class="w-full bg-white border-2 border-slate-300 rounded-xl px-3 py-2 font-bold text-slate-900">
+                </div>
+                <div class="flex justify-end space-x-2 pt-2 border-t-2 border-slate-200">
+                    <button type="button" onclick="closeModal('team-modal')" class="px-4 py-2 rounded-2xl border-2 border-slate-300 text-slate-900 font-black">Cancel</button>
+                    <button type="submit" class="bg-slate-900 hover:bg-black text-white font-black px-5 py-2 rounded-2xl border-2 border-slate-900 shadow-sm">Save Contact</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 5. ADD SPECIAL PLAN ITEM MODAL -->
+    <div id="special-item-modal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-5 max-h-[92vh] overflow-y-auto custom-scrollbar border-2 border-slate-300">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-start border-b-2 border-slate-200 pb-3">
+                <div class="space-y-1">
+                    <div class="flex items-center space-x-2">
+                        <span class="badge bg-amber-200 border-2 border-amber-400 text-amber-950 font-black text-xs flex items-center space-x-1 shadow-2xs">
+                            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-700 stroke-[3]"></i>
+                            <span>Special Plan Item</span>
+                        </span>
+                        <span class="badge bg-slate-100 text-slate-800 border border-slate-300 font-bold text-xs" id="special-modal-year-badge">Year 2027</span>
+                    </div>
+                    <h3 class="text-xl font-black text-slate-950 tracking-tight">Add Ad-hoc / Special Promotional Item</h3>
+                    <p class="text-xs text-slate-700 font-bold">Special items are added on demand with prior approval. Items, quantity and price are flexible.</p>
+                </div>
+                <button onclick="closeModal('special-item-modal')" class="text-slate-700 hover:text-slate-950 p-1.5 rounded-xl hover:bg-slate-100 border-2 border-slate-200 transition-all">
+                    <i data-lucide="x" class="w-5 h-5 stroke-[2.5]"></i>
+                </button>
+            </div>
+
+            <form onsubmit="handleCreateSpecialItem(event)" class="space-y-4 text-xs">
+                <!-- SEGMENT 1: Brand & Classification (Light Pastel Amber) -->
+                <div class="bg-amber-50/80 p-4 rounded-2xl border-2 border-amber-300 space-y-3 shadow-2xs">
+                    <label class="block font-black text-amber-950 uppercase text-xs tracking-wider flex items-center space-x-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                        <span>1. Brand & Category Assignment</span>
+                    </label>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block font-black text-slate-900 mb-1">Brand</label>
+                            <select id="special-item-brand" class="w-full bg-white border-2 border-amber-300 rounded-xl px-3 py-2 font-black text-slate-950 focus:outline-none focus:border-amber-600 shadow-2xs">
+                                <option value="Exium">Exium</option>
+                                <option value="Exium MUPS">Exium MUPS</option>
+                                <option value="Prompton">Prompton</option>
+                                <option value="Lanplus">Lanplus</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-black text-slate-900 mb-1">Material Type</label>
+                            <select id="special-item-mat" onchange="updateSpecialCategoryOptions()" class="w-full bg-white border-2 border-amber-300 rounded-xl px-3 py-2 font-black text-slate-950 focus:outline-none focus:border-amber-600 shadow-2xs">
+                                <option value="BR">BR (Brand Reminder)</option>
+                                <option value="PPM">PPM (Printed Material)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-black text-slate-900 mb-1">Target Month</label>
+                            <select id="special-item-month" class="w-full bg-white border-2 border-amber-300 rounded-xl px-3 py-2 font-black text-slate-950 focus:outline-none focus:border-amber-600 shadow-2xs">
+                                <option value="Jan">Jan</option>
+                                <option value="Feb">Feb</option>
+                                <option value="Mar">Mar</option>
+                                <option value="Apr">Apr</option>
+                                <option value="May">May</option>
+                                <option value="Jun">Jun</option>
+                                <option value="Jul">Jul</option>
+                                <option value="Aug">Aug</option>
+                                <option value="Sep">Sep</option>
+                                <option value="Oct">Oct</option>
+                                <option value="Nov">Nov</option>
+                                <option value="Dec">Dec</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-black text-slate-900 mb-1">Item Category</label>
+                        <input type="text" id="special-item-category" required list="special-category-list" placeholder="Select or type category (e.g. Special BR, Conference Gift, Doctor Camp...)" class="w-full bg-white border-2 border-amber-300 rounded-xl px-3.5 py-2 font-black text-slate-950 placeholder-amber-900/40 shadow-2xs">
+                        <datalist id="special-category-list">
+                            <option value="Special Item"></option>
+                            <option value="Special BR"></option>
+                            <option value="Regular BR"></option>
+                            <option value="Call Gadget"></option>
+                            <option value="Conference / Symposium Gift"></option>
+                            <option value="Doctor Camp Material"></option>
+                            <option value="Scientific Seminar Souvenir"></option>
+                            <option value="Exclusive Pen"></option>
+                            <option value="Regular Pen"></option>
+                            <option value="Prescription Pad (PP)"></option>
+                            <option value="Slip Pad (SLP)"></option>
+                            <option value="Educational Pad (Edu)"></option>
+                            <option value="Sales Aid (SA)"></option>
+                        </datalist>
+                    </div>
+                </div>
+
+                <!-- SEGMENT 2: Item Name & Dual Codes (Light Pastel Sky) -->
+                <div class="bg-sky-50/80 p-4 rounded-2xl border-2 border-sky-300 space-y-3 shadow-2xs">
+                    <label class="block font-black text-sky-950 uppercase text-xs tracking-wider flex items-center space-x-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-sky-600"></span>
+                        <span>2. Item Name & Identification</span>
+                    </label>
+                    <div>
+                        <label class="block font-black text-slate-900 mb-1">Item / Gadget Name <span class="text-rose-600">*</span></label>
+                        <input type="text" id="special-item-name" required placeholder="Enter physical item name (e.g. Digital BP Monitor, Doctor Leather Bag, Stethoscope...)" class="w-full bg-white border-2 border-sky-300 rounded-xl px-3.5 py-2 font-black text-slate-950 placeholder-sky-900/40 shadow-2xs">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block font-black text-blue-950 mb-1">SAP Code</label>
+                            <input type="text" id="special-item-sap" placeholder="Enter SAP Code" class="w-full bg-white border-2 border-blue-300 rounded-xl px-3 py-2 font-mono font-black text-blue-950 shadow-2xs">
+                        </div>
+                        <div>
+                            <label class="block font-black text-purple-950 mb-1">Legacy Code</label>
+                            <input type="text" id="special-item-legacy" placeholder="Enter Legacy Code" class="w-full bg-white border-2 border-purple-300 rounded-xl px-3 py-2 font-mono font-black text-purple-950 shadow-2xs">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEGMENT 3: Flexible Quantity & Price (Light Pastel Rose) -->
+                <div class="bg-rose-50/80 p-4 rounded-2xl border-2 border-rose-300 space-y-3 shadow-2xs">
+                    <label class="block font-black text-rose-950 uppercase text-xs tracking-wider flex items-center space-x-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-rose-600"></span>
+                        <span>3. Flexible Quantity & Pricing</span>
+                    </label>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div>
+                            <label class="block font-black text-slate-900 mb-1">Quantity <span class="text-rose-600">*</span></label>
+                            <input type="number" id="special-item-qty" required min="1" value="100" oninput="calculateSpecialTotal()" class="w-full bg-white border-2 border-rose-300 rounded-xl px-3 py-2 font-black text-slate-950 shadow-2xs">
+                        </div>
+                        <div>
+                            <label class="block font-black text-slate-900 mb-1">Unit Price (BDT) <span class="text-rose-600">*</span></label>
+                            <input type="number" id="special-item-price" required min="0" step="0.5" value="500" oninput="calculateSpecialTotal()" class="w-full bg-white border-2 border-rose-300 rounded-xl px-3 py-2 font-black text-slate-950 shadow-2xs">
+                        </div>
+                        <div>
+                            <label class="block font-black text-emerald-950 mb-1">Total Expense (BDT)</label>
+                            <input type="text" id="special-item-total" readonly value=" 50,000" class="w-full bg-emerald-100/70 border-2 border-emerald-300 rounded-xl px-3 py-2 font-black text-emerald-950 shadow-2xs">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEGMENT 4: Prior Approval & Governance (Light Pastel Emerald) -->
+                <div class="bg-emerald-50/80 p-4 rounded-2xl border-2 border-emerald-300 space-y-3 shadow-2xs">
+                    <label class="block font-black text-emerald-950 uppercase text-xs tracking-wider flex items-center space-x-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+                        <span>4. Prior Approval & Justification</span>
+                    </label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block font-black text-slate-900 mb-1">Approval State <span class="text-rose-600">*</span></label>
+                            <select id="special-item-approval" class="w-full bg-white border-2 border-emerald-300 rounded-xl px-3 py-2 font-black text-slate-950 shadow-2xs">
+                                <option value="Approved">Approved (Prior Approval Taken)</option>
+                                <option value="Pending">Pending Approval</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-black text-slate-900 mb-1">Approval Reference / Purpose</label>
+                            <input type="text" id="special-item-note" placeholder="e.g. Approved for BMA Annual Conference 2027" class="w-full bg-white border-2 border-emerald-300 rounded-xl px-3.5 py-2 font-bold text-slate-900 placeholder-emerald-900/40 shadow-2xs">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEGMENT 5: PMMD Assignment & Photo (Light Pastel Indigo) -->
+                <div class="bg-indigo-50/70 p-4 rounded-2xl border-2 border-indigo-300 space-y-3 shadow-2xs">
+                    <label class="block font-black text-indigo-950 uppercase text-xs tracking-wider flex items-center space-x-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
+                        <span>5. PMMD Procurement Lead & Mockup</span>
+                    </label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block font-black text-slate-900 mb-1">PMMD In-Charge</label>
+                            <select id="special-item-responsible" class="w-full bg-white border-2 border-indigo-300 rounded-xl px-2.5 py-2 font-bold text-slate-950 shadow-2xs">
+                                <option value="">-- Unassigned --</option>
+                                <option value="2">Md. Zahid Hasan (Sr. Asst. Mgr, PMMD)</option>
+                                <option value="3">Tanim Bin Mahmud (Asst. Mgr, PMMD)</option>
+                                <option value="4">Md Whahedur Rahman Mony (Officer, PMMD)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-black text-slate-900 mb-1">PO Status</label>
+                            <select id="special-item-po-status" class="w-full bg-white border-2 border-indigo-300 rounded-xl px-2.5 py-2 font-bold text-slate-950 shadow-2xs">
+                                <option value="Not Initiated">Not Initiated</option>
+                                <option value="PO In Progress">PO In Progress</option>
+                                <option value="PO Issued">PO Issued</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-black text-slate-900 mb-1">Item Photo / Mockup (Optional)</label>
+                        <input type="file" id="special-item-image-file" accept="image/*" class="text-xs font-bold text-slate-900 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-2 file:border-slate-900 file:bg-slate-900 file:text-white file:font-black hover:file:bg-black cursor-pointer">
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex justify-end space-x-2 pt-2 border-t-2 border-slate-200">
+                    <button type="button" onclick="closeModal('special-item-modal')" class="px-5 py-2.5 rounded-2xl border-2 border-slate-300 text-slate-900 font-black hover:bg-slate-100">Cancel</button>
+                    <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-black px-6 py-2.5 rounded-2xl border-2 border-amber-600 shadow-sm flex items-center space-x-1.5">
+                        <i data-lucide="check" class="w-4 h-4 stroke-[3]"></i>
+                        <span>Add Special Item</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Frontend Script -->
+    <script src="/static/app.js"></script>
+</body>
+</html>
