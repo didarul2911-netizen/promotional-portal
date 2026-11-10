@@ -1,3 +1,174 @@
+
+// ==================== AUTHENTICATION & LOGIN MANAGEMENT ====================
+const LOGIN_PROFILES = [
+    { id: 1, name: 'Md. Didarul Islam', role: 'Brand Manager (Admin)', dept: 'SMD', email: 'didarul.islam@radiant.com.bd', badge: 'Admin & Brand Lead', icon: 'crown', color: 'blue', border: 'border-blue-500/50 hover:border-blue-400', badgeClass: 'bg-blue-950 text-blue-300 border-blue-700/60' },
+    { id: 6, name: 'Md. Rakibuzzaman', role: 'Sr. Asst. Manager', dept: 'PMMD', email: 'md.rakibuzzaman@radiant.com.bd', badge: 'Store & Dispersion Lead', icon: 'package-check', color: 'amber', border: 'border-amber-500/50 hover:border-amber-400', badgeClass: 'bg-amber-950 text-amber-300 border-amber-700/60' },
+    { id: 2, name: 'Md. Zahid Hasan', role: 'Sr. Asst. Manager', dept: 'PMMD', email: 'zahid.hasan@radiant.com.bd', badge: 'Procurement & Sourcing', icon: 'clipboard-list', color: 'emerald', border: 'border-emerald-500/50 hover:border-emerald-400', badgeClass: 'bg-emerald-950 text-emerald-300 border-emerald-700/60' },
+    { id: 3, name: 'Tanim Bin Mahmud', role: 'Asst. Manager', dept: 'PMMD', email: 'tanim.mahmud@radiant.com.bd', badge: 'Procurement Specialist', icon: 'clock', color: 'indigo', border: 'border-indigo-500/50 hover:border-indigo-400', badgeClass: 'bg-indigo-950 text-indigo-300 border-indigo-700/60' },
+    { id: 4, name: 'Md Whahedur Rahman Mony', role: 'Officer', dept: 'PMMD', email: 'whahedur.rahman@radiant.com.bd', badge: 'Procurement Officer', icon: 'file-text', color: 'teal', border: 'border-teal-500/50 hover:border-teal-400', badgeClass: 'bg-teal-950 text-teal-300 border-teal-700/60' },
+    { id: 5, name: 'Md. Subhani Sujon', role: 'Asst. Manager (Design)', dept: 'PMMD', email: 'subhani.sujon@radiant.com.bd', badge: 'Packaging Design Lead', icon: 'pen-tool', color: 'purple', border: 'border-purple-500/50 hover:border-purple-400', badgeClass: 'bg-purple-950 text-purple-300 border-purple-700/60' }
+];
+
+function checkAuth() {
+    const savedUserId = localStorage.getItem('radiant_portal_user_id');
+    const loginScreen = document.getElementById('login-screen');
+    const appContainer = document.getElementById('app-container');
+
+    if (savedUserId && USERS[savedUserId]) {
+        currentRole = parseInt(savedUserId);
+        if (loginScreen) loginScreen.classList.add('hidden');
+        if (appContainer) appContainer.classList.remove('hidden');
+
+        initRoleSwitcher();
+        loadYears();
+        loadDashboard();
+        loadItems();
+        loadTeam();
+        lucide.createIcons();
+    } else {
+        if (appContainer) appContainer.classList.add('hidden');
+        if (loginScreen) loginScreen.classList.remove('hidden');
+        renderLoginProfiles();
+        lucide.createIcons();
+    }
+}
+
+function renderLoginProfiles() {
+    const container = document.getElementById('login-profile-cards');
+    if (!container) return;
+
+    container.innerHTML = LOGIN_PROFILES.map(user => {
+        const u = USERS[user.id] || user;
+        const photoEl = u.profile_image 
+            ? `<img src="static/uploads/${escapeHtml(u.profile_image)}" alt="${escapeHtml(user.name)}" class="w-12 h-12 rounded-2xl object-cover border-2 border-slate-700 shadow-md">`
+            : `<div class="w-12 h-12 rounded-2xl bg-slate-800 text-white font-black text-sm flex items-center justify-center border-2 border-slate-700 shadow-inner">${escapeHtml(user.name.split(' ').map(n=>n[0]).slice(0,2).join(''))}</div>`;
+
+        return `
+            <div onclick="loginAs(${user.id})" class="bg-slate-950/70 border-2 ${user.border} rounded-2xl p-4 transition-all duration-200 cursor-pointer flex flex-col justify-between group shadow-lg hover:scale-[1.02] hover:bg-slate-900/90 hover:shadow-2xl">
+                <div class="space-y-3">
+                    <div class="flex items-start justify-between gap-2">
+                        <div class="flex items-center space-x-3">
+                            ${photoEl}
+                            <div>
+                                <h4 class="font-black text-white text-sm group-hover:text-blue-300 transition-colors">${escapeHtml(user.name)}</h4>
+                                <p class="text-[11px] text-slate-400 font-bold">${escapeHtml(user.role)}, ${escapeHtml(user.dept)}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-[11px] font-mono text-slate-400 truncate flex items-center space-x-1.5">
+                        <i data-lucide="mail" class="w-3.5 h-3.5 text-slate-500 shrink-0"></i>
+                        <span class="truncate">${escapeHtml(user.email)}</span>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-800/80">
+                        <span class="text-[10px] font-black px-2 py-0.5 rounded-lg border ${user.badgeClass} font-mono">
+                            ${escapeHtml(user.badge)}
+                        </span>
+                        <span class="text-xs text-blue-400 font-black flex items-center space-x-1 group-hover:translate-x-1 transition-transform">
+                            <span>লগইন করুন</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5 stroke-[3]"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    lucide.createIcons();
+}
+
+function switchLoginView(mode) {
+    const profView = document.getElementById('login-view-profiles');
+    const credView = document.getElementById('login-view-credentials');
+    const profTab = document.getElementById('login-tab-profiles');
+    const credTab = document.getElementById('login-tab-credentials');
+
+    if (mode === 'profiles') {
+        if (profView) profView.classList.remove('hidden');
+        if (credView) credView.classList.add('hidden');
+        if (profTab) {
+            profTab.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center space-x-1.5 bg-blue-600 text-white shadow-sm cursor-pointer';
+        }
+        if (credTab) {
+            credTab.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center space-x-1.5 bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 cursor-pointer';
+        }
+    } else {
+        if (profView) profView.classList.add('hidden');
+        if (credView) credView.classList.remove('hidden');
+        if (credTab) {
+            credTab.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center space-x-1.5 bg-blue-600 text-white shadow-sm cursor-pointer';
+        }
+        if (profTab) {
+            profTab.className = 'flex-1 py-2 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center space-x-1.5 bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 cursor-pointer';
+        }
+    }
+    lucide.createIcons();
+}
+
+function loginAs(userId) {
+    const user = USERS[userId];
+    if (!user) return;
+
+    showLoginFeedback(`স্বাগতম, ${user.name}! সিস্টেমে প্রবেশ করা হচ্ছে...`, 'success');
+
+    setTimeout(() => {
+        localStorage.setItem('radiant_portal_user_id', userId);
+        currentRole = parseInt(userId);
+
+        const loginScreen = document.getElementById('login-screen');
+        const appContainer = document.getElementById('app-container');
+        if (loginScreen) loginScreen.classList.add('hidden');
+        if (appContainer) appContainer.classList.remove('hidden');
+
+        const switcher = document.getElementById('role-switcher');
+        if (switcher) switcher.value = userId;
+
+        initRoleSwitcher();
+        updateHeaderProfileUI();
+        renderPlanView();
+        if (currentTab === 'store') renderStoreTab();
+        if (currentTab === 'design') renderDesignTab();
+        loadDashboard();
+        lucide.createIcons();
+    }, 350);
+}
+
+function handleCredentialLogin(e) {
+    if (e) e.preventDefault();
+    const select = document.getElementById('login-email-select');
+    const pwdInput = document.getElementById('login-password-input');
+    const userId = select ? select.value : 1;
+    const pwd = pwdInput ? pwdInput.value.trim() : '';
+
+    if (!pwd) {
+        showLoginFeedback('অনুগ্রহ করে পাসওয়ার্ড বা পিন দিন (Default: 1234)', 'error');
+        return;
+    }
+
+    loginAs(parseInt(userId));
+}
+
+function showLoginFeedback(msg, type = 'info') {
+    const fb = document.getElementById('login-feedback');
+    if (!fb) return;
+    fb.classList.remove('hidden');
+    if (type === 'error') {
+        fb.className = 'p-3 rounded-xl text-xs font-bold text-center bg-rose-950/80 border border-rose-500 text-rose-200';
+    } else {
+        fb.className = 'p-3 rounded-xl text-xs font-bold text-center bg-emerald-950/80 border border-emerald-500 text-emerald-200';
+    }
+    fb.innerText = msg;
+}
+
+function handleLogout() {
+    localStorage.removeItem('radiant_portal_user_id');
+    const loginScreen = document.getElementById('login-screen');
+    const appContainer = document.getElementById('app-container');
+    if (appContainer) appContainer.classList.add('hidden');
+    if (loginScreen) loginScreen.classList.remove('hidden');
+    renderLoginProfiles();
+    lucide.createIcons();
+}
+
 // StepHub Inspired Promotional Material Management System (PMMD Connect)
 
 let currentTab = 'plan';
@@ -133,19 +304,7 @@ function getBrandLogoBadge(productName, extraClass = '', size = 'md') {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-
-    initRoleSwitcher();
-
-    loadYears();
-
-    loadDashboard();
-
-    loadItems();
-
-    loadTeam();
-
-    lucide.createIcons();
-
+    checkAuth();
 });
 
 
